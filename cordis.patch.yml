@@ -1,0 +1,6 @@
+# Register the DSH → CC Switch usage recorder. It observes the session event
+# feed and writes one row per model call into CC Switch's own database, so DSH
+# usage shows up in CC Switch's usage dashboard next to the other CLI apps.
+- insert:
+    - id: dsh-ccswitch-usage
+      name: dsh-ccswitch-usage

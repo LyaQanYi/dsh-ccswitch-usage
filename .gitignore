@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Editor and OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Scratch space used by the dev scripts
+tmp/
+*.log
+
+# Plugin patch backups written by the DSH profile manager
+*.lock
