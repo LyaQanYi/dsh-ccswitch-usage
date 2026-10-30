@@ -46,9 +46,17 @@ dependencies:
 Done in 2s using pnpm v11.28.5
 ```
 
-这条命令会做三件事：装进 `~/.dsh/profiles/desktop/node_modules/`（软链到源码目录）、
-**自动把包名追加到 `dsh.profile.bundles`**、更新 lockfile。
-装完重启 App（Cmd+Q 再打开）即生效——插件是 Host 侧代码，刷新网页不够。
+这条命令会做三件事：
+
+1. 装进 `~/.dsh/profiles/desktop/node_modules/`（`link:` 依赖，软链到源码目录）；
+2. **自动把包名追加到 `dsh.profile.bundles`**——`dsh plugin` 在 pnpm 成功后执行
+   `reconcile()`，凡是新装且声明了 `dsh.bundle` 的包都会被加进 bundles，不需要手工编辑；
+3. 更新 `pnpm-lock.yaml`。
+
+生效时机：**下次 DSH 启动时加载**。如果 App 正在运行，插件要等它重启（Cmd+Q 再打开）
+才会挂上——插件是 Host 侧代码，刷新网页不够。
+(实测中 App 会在 profile 变更后自行重新加载，此时无需手动重启；但不要依赖这一点，
+以重启为准最稳。)
 
 验证装上了：
 
@@ -142,7 +150,7 @@ cd ~/.dsh/profiles/desktop
 ## 开发
 
 ```bash
-npm test              # 89 个单元 + 集成测试
+npm test              # 94 个单元 + 集成测试
 npm run smoke         # 用假 Cordis 上下文驱动一次完整调用
 npm run edge-cases    # 定价/精度/事务回滚等边界
 npm run concurrency   # 回填与实时写入并发
